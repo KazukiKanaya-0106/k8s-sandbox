@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-sandbox-deploy
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: k8s-sandbox
+  template:
+    metadata:
+      labels:
+        app: k8s-sandbox
+    spec:
+      containers:
+        - name: k8s-sandbox-container
+          image: k8s-sandbox:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: STAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: k8s-sandbox-config
+                  key: STAGE
+            - name: SECRET_VALUE
+              valueFrom:
+                secretKeyRef:
+                  name: k8s-sandbox-secret
+                  key: SECRET_VALUE
+          
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
