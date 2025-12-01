@@ -1,4 +1,4 @@
-.PHONY: build create load apply set-ingress delete logs restart
+.PHONY: build create load apply delete logs restart
 
 # Build Docker Image
 build:
