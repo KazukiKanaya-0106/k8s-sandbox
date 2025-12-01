@@ -26,17 +26,14 @@ cp app/.env.example app/.env
 # 2. Docker イメージをビルド
 make build
 
-# 3. kind クラスタを作成（ingress-nginx と metrics-server を導入）
+# 3. kind クラスタを作成
 make create
 
 # 4. ローカルイメージを kind に取り込み
 make load
 
-# 5. Kubernetes マニフェストを適用（Secret / ConfigMap / Deployment / Service / HPA）
+# 5. Kubernetes マニフェストを適用（Secret / ConfigMap / Deployment / Service / HPA / Ingress）
 make apply
-
-# 6. （任意）apply 後に1分程度待って実行。ingress-nginx 経由で localhost:8081 に公開
-make set-ingress
 ```
 
 Ingress を適用すると、以下のエンドポイントでアプリにアクセスできます。
