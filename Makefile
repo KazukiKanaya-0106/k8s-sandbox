@@ -20,7 +20,7 @@ apply:
 	kubectl apply -f ./k8s/service.yaml
 	kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 	kubectl apply -f ./k8s/hpa.yaml
-	kubectl label node kind-control-plane ingress-ready=true --overwrite | true
+	kubectl label node kind-control-plane ingress-ready=true --overwrite
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/kind/deploy.yaml
 	kubectl wait -n ingress-nginx \
 		--for=condition=Ready pod \
